@@ -10,13 +10,15 @@ const { Pool } = require("pg");
 const app = express(); // 🔁 This should come first
 
 // ✅ Middleware — must come before any routes
-app.use(
-    cors({
-      origin: "*", // or specify allowed origins like ["http://localhost:5500"]
-      methods: ["GET", "POST"],
-      allowedHeaders: ["Content-Type"],
-    })
-  );
+const corsOptions = {
+    origin: "https://majestic-tanuki-ca1f9b.netlify.app", // your Netlify site
+    methods: ["GET", "POST"],
+    credentials: true,
+  };
+  
+  app.use(cors(corsOptions));
+  
+
   app.use(express.json());
 
 

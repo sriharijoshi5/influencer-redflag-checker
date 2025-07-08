@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const selectedReason = reasonSelect.value;
   
       try {
-        const res = await fetch("http://localhost:4000/report", {
+        const res = await fetch("https://influencer-redflag-checker.onrender.com/report", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
