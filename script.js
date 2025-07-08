@@ -1,42 +1,35 @@
-async function checkInfluencer() {
-    const handle = document.getElementById('handleInput').value.toLowerCase().trim();
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector("#report-form"); // Your form's ID
+    const handleInput = document.querySelector("#handle");
+    const reasonSelect = document.querySelector("#reason");
   
-    const data = {
-        "financewithshady": {
-          name: "Finance With Shady",
-          red_flags: [
-            "🚩 32% fake followers",
-            "🚩 Generic recycled content",
-            "🚩 No refund policy"
-          ]
-        },
-        "fakecoach123": {
-          name: "Fake Coach 123",
-          red_flags: [
-            "🚩 ₹50K for WhatsApp-only access",
-            "🚩 Too many testimonials with same wording",
-            "🚩 No proof of concept or case study"
-          ]
-        },
-        "ecomguru": {
-          name: "Ecom Guru",
-          red_flags: [
-            "🚩 Claims 10x ROI with no spend cap",
-            "🚩 Screenshot testimonials only",
-            "🚩 Course upsells every week"
-          ]
-        }
-      };
-      
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
   
-    const resultDiv = document.getElementById('result');
-    resultDiv.innerHTML = '';
+      const influencerHandle = handleInput.value;
+      const selectedReason = reasonSelect.value;
   
-    if (data[handle]) {
-      const flags = data[handle].red_flags.map(flag => `<li>${flag}</li>`).join('');
-      resultDiv.innerHTML = `<h2>${data[handle].name}</h2><ul>${flags}</ul>`;
-    } else {
-      resultDiv.innerHTML = `<p>No known red flags for <b>${handle}</b> — but stay cautious!</p>`;
-    }
-  }
+      try {
+        const res = await fetch("http://localhost:4000/report", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            handle: influencerHandle,
+            reason: selectedReason,
+          }),
+        });
+  
+        const data = await res.json();
+        console.log("✅ Report submitted", data);
+        alert("Thanks for reporting!");
+  
+        form.reset(); // optional
+      } catch (err) {
+        console.error("❌ Failed to submit report", err);
+        alert("Something went wrong");
+      }
+    });
+  });
   
