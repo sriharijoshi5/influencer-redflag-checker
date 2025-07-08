@@ -10,8 +10,14 @@ const { Pool } = require("pg");
 const app = express(); // 🔁 This should come first
 
 // ✅ Middleware — must come before any routes
-app.use(cors());
-app.use(express.json());
+app.use(
+    cors({
+      origin: "*", // or specify allowed origins like ["http://localhost:5500"]
+      methods: ["GET", "POST"],
+      allowedHeaders: ["Content-Type"],
+    })
+  );
+  app.use(express.json());
 
 
 
