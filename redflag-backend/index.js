@@ -71,3 +71,14 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is listening on http://localhost:${PORT}`);
 });
+
+app.get("/reports", async (req, res) => {
+    try {
+      const result = await pool.query("SELECT * FROM reports ORDER BY created_at DESC LIMIT 50");
+      res.status(200).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Something went wrong while fetching reports" });
+    }
+  });
+  

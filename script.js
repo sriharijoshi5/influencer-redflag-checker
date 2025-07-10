@@ -46,5 +46,27 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Something went wrong: " + err.message);
       }
     });
+
+    async function loadReports() {
+        try {
+          const res = await fetch("https://influencer-redflag-checker.onrender.com/reports");
+          const reports = await res.json();
+      
+          const reportsList = document.querySelector("#reports-list");
+          reportsList.innerHTML = "";
+      
+          reports.forEach((report) => {
+            const li = document.createElement("li");
+            li.className = "bg-gray-800 p-3 rounded-md";
+            li.innerText = `@${report.handle} — ${report.reason}`;
+            reportsList.appendChild(li);
+          });
+        } catch (err) {
+          console.error("❌ Failed to load reports", err);
+        }
+      }
+      
+      loadReports(); // run on page load
+      
   });
   
